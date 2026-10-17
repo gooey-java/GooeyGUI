@@ -7,6 +7,12 @@
  * Every component's position is the (x, y) of its top-left corner, in pixels,
  * measured from the top-left of the window. Y increases downward.</p>
  *
+ * <h2>Components at a glance</h2>
+ *
+ * <p><img src="doc-files/GooeyGUI_Components.png"
+ *   alt="The GooeyGUI components: Button, CheckBox, RadioButton, TextField, Dropdown, TextArea, Slider, FileChooser, Label, Image, Panel and TabbedPane"
+ *   style="max-width:100%; height:auto;" width="1120"></p>
+ * 
  * <h2>Running your code when something happens</h2>
  *
  * <p>Methods such as {@code setOnClick} and {@code setOnChange} take the name
