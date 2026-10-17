@@ -11,7 +11,7 @@
  *
  * <p><img src="doc-files/GooeyGUI_Components.png"
  *   alt="The GooeyGUI components: Button, CheckBox, RadioButton, TextField, Dropdown, TextArea, Slider, FileChooser, Label, Image, Panel and TabbedPane"
- *   style="max-width:100%; height:auto;" width="1120"></p>
+ *   style="max-width:100%; height:auto;" width="747"></p>
  * 
  * <h2>Running your code when something happens</h2>
  *
