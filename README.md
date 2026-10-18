@@ -12,20 +12,8 @@ GooeyGUI lets you build windows with buttons, text boxes, sliders, and more usin
 
 1. Open VS Code and type **Ctrl + Shift + P** to open the Command Palette. Then start typing "Create..." and select "Create Java Project". Select "No Build Tool", choose the folder that your projects live in, and then name your new project something.
 2. Make a `lib` folder in your project and put `GooeyGUI.jar` and `GooeyGUI-sources.jar` in it.
-3. In `.vscode/settings.json`, tell VS Code about both jars. The `sources` line is what makes the documentation pop up when you hover over GooeyGUI methods:
-
-```json
-{
-    "java.project.sourcePaths": ["src"],
-    "java.project.outputPath": "bin",
-    "java.project.referencedLibraries": {
-        "include": ["lib/**/*.jar"],
-        "sources": { "lib/GooeyGUI.jar": "lib/GooeyGUI-sources.jar" }
-    }
-}
-```
-
-3. Put images and data files in folders inside your project folder (for example `images/cat.png`), not inside `src`.
+3. For organization, put any images and data files in folders inside your project folder (for example `images/cat.png`), not inside `src`.
+4. Import, write your code, and hit Run:
 
 ## Your first program
 
