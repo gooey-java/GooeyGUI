@@ -15,7 +15,7 @@ cd "$(dirname "$0")"
 
 NAME=GooeyGUI
 PKG=gooeygui
-RELEASE=17    # the oldest Java version the jar runs on
+RELEASE=8    # the oldest Java version the jar runs on
 
 rm -rf build _site
 mkdir -p _site

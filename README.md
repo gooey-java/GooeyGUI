@@ -122,7 +122,7 @@ Some GooeyGUI class names (`Window`, `Label`, `Image`, `Panel`, `Button`, `TextF
 
 You need a JDK 17 or newer. Run `./build.sh` (Mac/Linux) or `build.bat`
 (Windows). That rebuilds `GooeyGUI.jar` and `GooeyGUI-sources.jar` in this folder
-(compiled to run on Java 17 or newer) and builds the whole website in
+(compiled to run on Java 8 or newer) and builds the whole website in
 `_site/`: the showcase page, the Javadoc in `_site/docs/`, and both jars. Open
 `_site/index.html` to preview it. (`_site/` isn't committed; GitHub builds its own.)
 

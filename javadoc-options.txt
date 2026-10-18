@@ -1,5 +1,5 @@
 -quiet
---release 17
+--release 8
 -d _site/docs
 -windowtitle GooeyGUI
 -doctitle GooeyGUI
