@@ -1,29 +1,43 @@
 package gooeygui;
 
-import java.awt.MediaTracker;
-import java.io.File;
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 
 /**
- * A picture loaded from an image file (.png, .jpg, or .gif) and stretched to
- * fit the component's width and height.
+ * A picture loaded from an image file (.png, .jpg, or .gif).
  *
- * <p>File paths are relative to the project folder (the folder you opened in
+ * <p>An {@code Image} can be shown two ways:</p>
+ * <ul>
+ *   <li>Added to a {@link Window} or {@link Panel} like any other component.
+ *       The picture is stretched to the image's width and height.</li>
+ *   <li>Given to a {@link Button} so the button shows the picture. The button
+ *       resizes the picture to fit itself, so the image's position and size
+ *       don't matter.</li>
+ * </ul>
+ *
+ * <p>File paths start from the project folder (the folder you opened in
  * VS Code), not the {@code src} folder. A good habit is to keep images in a
  * folder named {@code images} inside the project folder.</p>
  *
  * <pre>{@code
+ * // Shown in the window at (10, 10), stretched to 100 by 100 pixels
  * Image logo = new Image("images/logo.png", 10, 10, 100, 100);
  * window.addComponent(logo);
+ *
+ * // Used on a button, so no position or size is needed
+ * Image playPicture = new Image("images/play.png");
+ * Button play = new Button(playPicture, 20, 150, 60, 60, this::play);
  * }</pre>
  */
 public class Image extends Component {
     private JLabel jLabel;
     private String currentPath;
 
+    // The picture at its original size, kept so it can be re-scaled without reloading the file.
+    private ImageIcon originalIcon;
+
     /**
-     * Constructs an image component that displays the given image file.
+     * Constructs an image at the given position, stretched to the given size.
      *
      * @param filePath the path to the image file, such as {@code "images/cat.png"}
      * @param x the x-coordinate of the top-left corner, in pixels
@@ -41,61 +55,64 @@ public class Image extends Component {
     }
 
     /**
+     * Constructs an image at its original size, positioned at (0, 0). This is
+     * the simplest way to make a picture for a {@link Button}.
+     *
+     * <pre>{@code
+     * Button play = new Button(new Image("images/play.png"), 20, 20, 60, 60, this::play);
+     * }</pre>
+     *
+     * @param filePath the path to the image file, such as {@code "images/play.png"}
+     * @throws GooeyGUIException if the file cannot be found or is not a readable image
+     */
+    public Image(String filePath) {
+        this(ImageFiles.load(filePath, "an Image"), filePath);
+    }
+
+    /**
+     * Constructs an image at its original size from an already-loaded picture.
+     *
+     * @param loaded the loaded picture
+     * @param filePath the path it was loaded from
+     */
+    private Image(ImageIcon loaded, String filePath) {
+        super(new JLabel(), 0, 0, loaded.getIconWidth(), loaded.getIconHeight());
+        this.jLabel = (JLabel) getSwingComponent();
+        this.originalIcon = loaded;
+        this.currentPath = filePath;
+        refreshIcon();
+    }
+
+    /**
+     * Returns the picture at its original size. Package-private; used by
+     * {@link Button}.
+     *
+     * @return the original, unscaled picture
+     */
+    ImageIcon getOriginalIcon() {
+        return originalIcon;
+    }
+
+    /**
+     * Stretches the original picture to this component's current size.
+     */
+    private void refreshIcon() {
+        jLabel.setIcon(ImageFiles.stretch(originalIcon, getWidth(), getHeight()));
+    }
+
+    /**
      * Loads a new image file and stretches it to fit this component's current
-     * width and height.
+     * width and height. A {@link Button} already showing this image keeps its
+     * old picture; call the button's {@code setImage} method to update it.
      *
      * @param filePath the path to the image file, such as {@code "images/dog.png"}
      * @throws GooeyGUIException if {@code filePath} is {@code null}, the file
      *                           cannot be found, or it is not a readable image
      */
     public void setImagePath(String filePath) {
-        jLabel.setIcon(loadScaled(filePath));
+        this.originalIcon = ImageFiles.load(filePath, "an Image");
         this.currentPath = filePath;
-    }
-
-    /**
-     * Loads an image file and scales it to this component's size, with
-     * friendly errors for common mistakes.
-     *
-     * @param filePath the path to the image file
-     * @return the scaled image
-     * @throws GooeyGUIException if the image cannot be loaded
-     */
-    private ImageIcon loadScaled(String filePath) {
-        if (filePath == null) {
-            throw new GooeyGUIException("The file path for an Image was null.",
-                    "Give the path as a String, such as \"images/cat.png\".");
-        }
-        File file = new File(filePath);
-        if (!file.exists()) {
-            String hint = "Check the spelling (including capital letters and the extension, "
-                    + "like .png or .jpg). Paths start from your project folder, not the src folder.";
-            if (new File("src", filePath).exists()) {
-                hint = "The file is inside your src folder. Either move it to your project "
-                        + "folder or change the path to \"src/" + filePath + "\".";
-            }
-            throw new GooeyGUIException(
-                    "Could not find the image file \"" + filePath + "\". GooeyGUI looked here: "
-                    + file.getAbsolutePath(),
-                    hint);
-        }
-        if (file.isDirectory()) {
-            throw new GooeyGUIException(
-                    "\"" + filePath + "\" is a folder, not an image file.",
-                    "Add the image's file name to the end of the path, such as \""
-                    + filePath + "/cat.png\".");
-        }
-        ImageIcon originalIcon = new ImageIcon(filePath);
-        if (originalIcon.getImageLoadStatus() != MediaTracker.COMPLETE) {
-            throw new GooeyGUIException(
-                    "\"" + filePath + "\" exists, but Java could not read it as an image.",
-                    "Use a .png, .jpg, or .gif file. Renaming a file's extension does not "
-                    + "convert it; re-save or export it in one of those formats.");
-        }
-        // Fully-qualified java.awt.Image prevents a naming conflict with this Image class.
-        java.awt.Image scaled = originalIcon.getImage().getScaledInstance(
-                getWidth(), getHeight(), java.awt.Image.SCALE_SMOOTH);
-        return new ImageIcon(scaled);
+        refreshIcon();
     }
 
     /**
@@ -116,7 +133,7 @@ public class Image extends Component {
     @Override
     public void setWidth(int width) {
         super.setWidth(width);
-        setImagePath(currentPath);
+        refreshIcon();
     }
 
     /**
@@ -128,6 +145,6 @@ public class Image extends Component {
     @Override
     public void setHeight(int height) {
         super.setHeight(height);
-        setImagePath(currentPath);
+        refreshIcon();
     }
 }

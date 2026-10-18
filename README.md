@@ -56,20 +56,33 @@ Every component's position is the (x, y) of its top-left corner, in pixels, meas
 
 Methods like `setOnClick`, `setOnChange`, and `setOnSubmit` take a method to run, written as `this::methodName` (no parentheses). The method must be `void` with no parameters. Because it uses `this`, set up your components in a constructor, not in `main`.
 
+## Buttons with pictures
+
+Give a `Button` an `Image` instead of (or along with) text. `new Image("path")` loads a picture without needing a position or size, since the button resizes it to fit:
+
+```java
+Image playPicture = new Image("images/play.png");
+Button play = new Button(playPicture, 20, 20, 60, 60, this::play);
+
+Button save = new Button("Save", new Image("images/disk.png"), 100, 20, 120, 40, this::save);
+```
+
+The picture fits inside the button without being stretched out of shape. Use `setImage(pausePicture)` to change it while the program runs.
+
 ## Components
 
 | Class | What it is |
 |---|---|
 | `Window` | The main window. Add components to it with `addComponent`. |
 | `Label` | Text the user can't edit. |
-| `Button` | Runs a method when clicked. |
+| `Button` | Runs a method when clicked. Can show text, a picture, or both. |
 | `TextField` | One line of typed text. |
 | `TextArea` | Many lines of text, with scrolling. |
 | `CheckBox` | An on/off box. |
 | `RadioButton` + `RadioGroup` | Pick one option from a group. |
 | `Dropdown` | Pick one option from a menu. |
 | `Slider` | Pick a whole number in a range. |
-| `Image` | A picture from a .png, .jpg, or .gif file. |
+| `Image` | A picture from a .png, .jpg, or .gif file. Can be shown in a window or on a button. |
 | `Panel` | Groups components so they can be hidden, shown, or disabled together. |
 | `TabbedPane` | Tabs that each show a `Panel`. |
 | `FileChooser` | A pop-up for picking a file (works with `Scanner`). |
@@ -96,5 +109,5 @@ From the GooeyGUI project folder (Java 17 or newer):
 javac --release 17 -d bin src/gooeygui/*.java
 jar --create --file GooeyGUI.jar -C bin gooeygui
 jar --create --file GooeyGUI-sources.jar -C src gooeygui
-javadoc -d docs src/gooeygui/*.java
+javadoc -d docs -sourcepath src gooeygui
 ```
