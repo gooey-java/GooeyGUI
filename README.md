@@ -1,6 +1,12 @@
 # GooeyGUI
 
-GooeyGUI lets you build windows with buttons, text boxes, sliders, and more using simple, object-oriented Java. It is built on Java Swing but hides Swing's complexity.
+GooeyGUI lets you build windows with buttons, text boxes, sliders, and more using simple, object-oriented Java. It is built on Java Swing but hides Swing's complexity. Part of the [Gooey Java](https://gooey-java.github.io/) libraries for AP Computer Science A.
+
+**Website:** https://gooey-java.github.io/GooeyGUI/
+
+**Docs:** https://gooey-java.github.io/GooeyGUI/docs/
+
+**Download:** [GooeyGUI.jar](https://gooey-java.github.io/GooeyGUI/GooeyGUI.jar) and [GooeyGUI-sources.jar](https://gooey-java.github.io/GooeyGUI/GooeyGUI-sources.jar)
 
 ## Setting up a project
 
@@ -87,7 +93,7 @@ The picture fits inside the button without being stretched out of shape. Use `se
 | `TabbedPane` | Tabs that each show a `Panel`. |
 | `FileChooser` | A pop-up for picking a file (works with `Scanner`). |
 
-The full documentation is in the `docs` folder (open `docs/index.html`).
+The full documentation is at https://gooey-java.github.io/GooeyGUI/docs/.
 
 ## Errors
 
@@ -99,15 +105,37 @@ If one of your own methods crashes while running as a button click (or other act
 
 Some GooeyGUI class names (`Window`, `Label`, `Image`, `Panel`, `Button`, `TextField`, `TextArea`, `Component`) are also used by `java.awt`. Don't write `import java.awt.*;` in the same file as `import gooeygui.*;`. If you need something from `java.awt`, import just that class, such as `import java.awt.Color;`.
 
----
+## What's in this repository
 
-## For the teacher: building the jars
+| Path | What it is |
+|---|---|
+| `src/gooeygui/` | The library's source code |
+| `GooeyGUI.jar` | The compiled library |
+| `GooeyGUI-sources.jar` | The source code as a jar, for hover docs in VS Code |
+| `site/` | The showcase page (the website's home page) |
+| `build.sh`, `build.bat` | Build the jars, the Javadoc, and the website |
+| `javadoc-options.txt` | Settings for the docs (title, footer, Java version) |
+| `.github/workflows/pages.yml` | Publishes the website after every push |
+| `LICENSE` | The MIT License |
 
-From the GooeyGUI project folder (Java 17 or newer):
+## Building and publishing
 
-```
-javac --release 17 -d bin src/gooeygui/*.java
-jar --create --file GooeyGUI.jar -C bin gooeygui
-jar --create --file GooeyGUI-sources.jar -C src gooeygui
-javadoc -d docs -sourcepath src gooeygui
-```
+You need a JDK 17 or newer. Run `./build.sh` (Mac/Linux) or `build.bat`
+(Windows). That rebuilds `GooeyGUI.jar` and `GooeyGUI-sources.jar` in this folder
+(compiled to run on Java 17 or newer) and builds the whole website in
+`_site/`: the showcase page, the Javadoc in `_site/docs/`, and both jars. Open
+`_site/index.html` to preview it. (`_site/` isn't committed; GitHub builds its own.)
+
+Publishing is automatic: after every push to `main`, GitHub runs `build.sh` and
+publishes `_site/` to https://gooey-java.github.io/GooeyGUI/. The **Actions** tab
+on GitHub shows each run. This needs a one-time setting: **Settings > Pages >
+Source: GitHub Actions**.
+
+The showcase page is `site/index.html`. Its styles come from
+`https://gooey-java.github.io/gooey.css` in the gooey-java.github.io repo, which
+every Gooey Java page shares.
+
+## License
+
+GooeyGUI is released under the [MIT License](LICENSE): anyone may use, copy,
+change, and share it, as long as the copyright notice and license are kept with it.

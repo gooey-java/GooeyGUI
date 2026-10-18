@@ -1,0 +1,8 @@
+-quiet
+--release 17
+-d _site/docs
+-windowtitle GooeyGUI
+-doctitle GooeyGUI
+-bottom "Copyright &copy; 2026 GooeyJava. Released under the <a href='https://github.com/gooey-java/GooeyGUI/blob/main/LICENSE'>MIT License</a>."
+-sourcepath src
+gooeygui
